@@ -81,6 +81,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Stream;
 
@@ -458,8 +459,9 @@ public final class HijrahChronology extends AbstractChronology implements Serial
 
     @Override
     public HijrahDate date(TemporalAccessor temporal) {
-        if (temporal instanceof HijrahDate) {
-            return (HijrahDate) temporal;
+        Objects.requireNonNull(temporal, "temporal");
+        if (temporal instanceof HijrahDate hijrahDate && hijrahDate.getChronology().equals(this)) {
+            return hijrahDate;
         }
         return HijrahDate.ofEpochDay(this, temporal.getLong(EPOCH_DAY));
     }
